@@ -61,4 +61,16 @@ console.log("id",_id)
     console.log("D",deletedUser)
 });
 
+router.get('/list',async function (req,res,next) {
+  
+  try {
+    const allUsers = await userModel.find().sort({ lastMessageDate: -1 }); // Sort by lastMessageDate descending
+    res.status(201).json({data:allUsers});
+    console.log(allUsers)
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+});
+
 module.exports = router;
