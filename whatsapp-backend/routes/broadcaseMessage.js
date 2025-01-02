@@ -32,4 +32,34 @@ router.post('/create', async function (req, res, next) {
   }
 });
 
+router.post('/delete', async function (req, res, next) {
+  const { _id } = req.body; // Use req.query for GET parameters
+console.log("id",_id)
+  if (!_id) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+ const deletedMessage = await broadcastMessageModel.findByIdAndDelete(_id)
+    .then(() => {
+      console.log('Message deleted successfully');
+      res.status(200).json({ message: 'Message deleted successfully' });
+    })
+    .catch((err) => {
+      console.error('Error in deleting message:', err);
+      res.status(500).json({ message: 'Failed to delete the message.' });
+    });
+});
+
+
+router.get('/list',async function (req,res,next) {
+  
+  try {
+    const allMessages = await broadcastMessageModel.find().sort({ MessageDate: 1 }); // Sort by lastMessageDate descending
+    res.status(201).json({data:allMessages});
+    console.log(allMessages)
+  } catch (err) {
+    console.error('Error fetching messages:', err);
+    res.status(500).json({ message: 'Failed to fetch messages' });
+  }
+});
+
 module.exports = router;
