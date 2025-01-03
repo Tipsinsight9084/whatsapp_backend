@@ -35,4 +35,37 @@ router.post('/create', async function (req, res, next) {
   }
 });
 
+router.post('/delete', async function (req, res, next) {
+  const { _id } = req.body; // Use req.query for GET parameters
+console.log("id",_id)
+  if (!_id) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+ const deletedMessage = await broadcastuserModel.findByIdAndDelete(_id)
+    .then(() => {
+      console.log('Broadcast user deleted successfully');
+      res.status(200).json({ message: 'Broadcast user deleted successfully' });
+    })
+    .catch((err) => {
+      console.error('Error in deleting message:', err);
+      res.status(500).json({ message: 'Failed to delete the broadcase user.' });
+    });
+});
+
+
+router.get('/list',async function (req,res,next) {
+  
+  try {
+    const allUsers = await broadcastuserModel.find(); // Sort by lastMessageDate descending
+    res.status(201).json({data:allUsers});
+    console.log(allUsers)
+  } catch (err) {
+    console.error('Error fetchingUsers:', err);
+    res.status(500).json({ message: 'Failed to fetch Users' });
+  }
+});
+
+module.exports = router;
+
+
 module.exports = router;

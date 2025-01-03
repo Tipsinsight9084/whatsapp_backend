@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var broadcastMessageRouter = require('./routes/broadcaseMessage');
 var broadcastUserRouter = require('./routes/broadcastUser');
+var broadcastDetailsRouter =  require('./routes/broadcastDetails')
 
 var app = express();
 app.use(cors({
@@ -27,6 +28,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/broadcastMessage',broadcastMessageRouter);
 app.use('/broadcastUser',broadcastUserRouter );
+app.use('/broadcastDetails',broadcastDetailsRouter );
 
 
 // catch 404 and forward to error handler
